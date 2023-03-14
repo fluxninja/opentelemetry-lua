@@ -84,9 +84,9 @@ function _M.export_spans(self, spans)
                     attributes = spans[1].tracer.provider.resource.attrs,
                     dropped_attributes_count = 0,
                 },
-                instrumentation_library_spans = {
+                scope_spans = {
                     {
-                        instrumentation_library = {
+                        scope = {
                             name = spans[1].tracer.il.name,
                             version = spans[1].tracer.il.version,
                         },
@@ -98,7 +98,7 @@ function _M.export_spans(self, spans)
     }
     for _, span in ipairs(spans) do
         table.insert(
-            body.resource_spans[1].instrumentation_library_spans[1].spans,
+            body.resource_spans[1].scope_spans[1].spans,
             encoder.for_otlp(span))
     end
     return call_collector(self, pb.encode(body))

@@ -1,5 +1,6 @@
 local encoder = require("opentelemetry.trace.exporter.encoder")
 local pb = require("opentelemetry.trace.exporter.pb")
+local json = require("cjson")
 local otel_global = require("opentelemetry.global")
 local util = require("opentelemetry.util")
 local BACKOFF_RETRY_LIMIT = 3
@@ -101,7 +102,7 @@ function _M.export_spans(self, spans)
             body.resource_spans[1].scope_spans[1].spans,
             encoder.for_otlp(span))
     end
-    return call_collector(self, pb.encode(body))
+    return call_collector(self, json.encode(body))
 end
 
 function _M.shutdown(self)

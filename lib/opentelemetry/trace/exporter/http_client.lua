@@ -1,4 +1,4 @@
-local http = require("resty.http")
+local http = require("socket.http")
 
 local _M = {
 }
@@ -17,7 +17,7 @@ local mt = {
 ------------------------------------------------------------------
 function _M.new(address, timeout, headers)
     headers = headers or {}
-    headers["Content-Type"] = "application/x-protobuf"
+    headers["Content-Type"] = "application/json"
 
     local uri = address .. "/v1/trace"
     if address:find("http", 1, true) ~= 1 then
@@ -33,28 +33,28 @@ function _M.new(address, timeout, headers)
 end
 
 function _M.do_request(self, body)
-    local httpc = http.new()
-    httpc:set_timeout(self.timeout * 1000)
+    http.TIMEOUT = self.timeout * 1000
 
-    local res, err = httpc:request_uri(self.uri, {
+    local response_body = {}
+    local response, code, response_headers = http.request{
+        url = self.uri,
         method = "POST",
         headers = self.headers,
-        body = body,
-    })
+        source = ltn12.source.string(body),
+        sink = ltn12.sink.table(response_body),
+    }
 
-    if not res then
-        ngx.log(ngx.ERR, "request failed: ", err)
-        httpc:close()
+    if not response then
+        ngx.log(ngx.ERR, "request failed: ", code)
         return nil, err
     end
 
-    if res.status ~= 200  then
-        ngx.log(ngx.ERR, "request failed: ", res.body)
-        httpc:close()
-        return nil, "request failed: " .. res.status
+    if code ~= ngx.HTTP_OK  then
+        ngx.log(ngx.ERR, "request failed: ", response_body[1])
+        return nil, "request failed: " .. code
     end
 
-    return res, nil
+    return response_body[1], nil
 end
 
 return _M

@@ -1,19 +1,19 @@
 package = "opentelemetry-lua"
 version = "master-0"
 source = {
-   url = "git://github.com/yangxikun/opentelemetry-lua",
+   url = "git://github.com/fluxninja/opentelemetry-lua",
    branch = "master",
 }
 
 description = {
    summary = "The OpenTelemetry Lua SDK. This is repo's default rockspec, which is used to test the HEAD commit.",
-   homepage = "https://github.com/yangxikun/opentelemetry-lua",
+   homepage = "https://github.com/fluxninja/opentelemetry-lua",
    license = "Apache License 2.0"
 }
 
 dependencies = {
     "lua-protobuf = 0.3.3",
-    "lua-resty-http = 0.16.1-0",
+    "luasocket = 3.1.0",
 }
 
 build = {

@@ -46,9 +46,9 @@ function _M.for_export(span)
         end_time_unix_nano = string.format("%d", span.end_time),
         attributes = span.attributes,
         dropped_attributes_count = 0,
-        events = span.events,
+        events = nil,
         dropped_events_count = 0,
-        links = {},
+        links = nil,
         dropped_links_count = 0,
         status = span.status
     }
@@ -63,9 +63,9 @@ end
 --------------------------------------------------------------------------------
 function _M.for_otlp(span)
     local ret = _M.for_export(span)
-    ret.trace_id = hex2bytes(ret.trace_id)
-    ret.span_id = hex2bytes(ret.span_id)
-    ret.parent_span_id = hex2bytes(ret.parent_span_id)
+    ret.trace_id = ngx.encode_base64(hex2bytes(ret.trace_id))
+    ret.span_id = ngx.encode_base64(hex2bytes(ret.span_id))
+    ret.parent_span_id = ngx.encode_base64(hex2bytes(ret.parent_span_id))
     return ret
 end
 

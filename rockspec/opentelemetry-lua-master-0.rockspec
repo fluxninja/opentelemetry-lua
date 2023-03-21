@@ -2,7 +2,7 @@ package = "opentelemetry-lua"
 version = "master-0"
 source = {
    url = "git://github.com/fluxninja/opentelemetry-lua",
-   branch = "master",
+   branch = "main",
 }
 
 description = {
@@ -13,6 +13,7 @@ description = {
 
 dependencies = {
     "lua-protobuf = 0.3.3",
+    "lua-cjson = 2.1.0.10",
     "luasocket = 3.1.0",
 }
 

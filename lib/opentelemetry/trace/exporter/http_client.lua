@@ -19,7 +19,7 @@ function _M.new(address, timeout, headers)
     headers = headers or {}
     headers["Content-Type"] = "application/json"
 
-    local uri = address .. "/v1/trace"
+    local uri = address .. "/v1/traces"
     if address:find("http", 1, true) ~= 1 then
         uri = "http://" .. uri
     end
